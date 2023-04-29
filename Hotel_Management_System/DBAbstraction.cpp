@@ -1,9 +1,16 @@
+/*
+author      :   saad khan
+project     :   Hotel Management System
+date        :   April-2023
+*/
+
 #include<iostream>
 #include"DBAbstraction.h"
 #include"sqlite3.h"
 
 
-DBAbstraction::DBAbstraction(std::string pathToFile) {
+DBAbstraction::DBAbstraction() {
+	std::string pathToFile = "Hotel.db";
 	int statusOfOpen = sqlite3_open(pathToFile.c_str(), &db);
 
 	if (statusOfOpen != SQLITE_OK) {

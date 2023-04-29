@@ -4,14 +4,12 @@ project     :   Hotel Management System
 date        :   April-2023
 */
 
+#pragma once
 #include<iostream>
-#include<string>
-#include<string>
 #include"Admin.h"
-#include"Hotel.h"
-
-int main() {
-	Hotel H;
-	H.run();
-	return 0;
-}
+class Staff {
+    std::string userName, password;
+public:
+    void run();
+    void login(const std::string&);
+};

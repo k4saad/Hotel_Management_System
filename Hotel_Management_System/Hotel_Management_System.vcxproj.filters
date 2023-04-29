@@ -27,6 +27,12 @@
     <ClCompile Include="Admin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Hotel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Staff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -36,6 +42,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Admin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hotel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Staff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

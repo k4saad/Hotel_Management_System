@@ -1,17 +1,23 @@
+/*
+author      :   saad khan
+project     :   Hotel Management System
+date        :   April-2023
+*/
+
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
 #include <sha.h>
 #include <hex.h>
+#include<limits>
 #include"Admin.h"
-#include"DBAbstraction.h"
 
 Admin::Admin() {
-    if(!checkUsername("saad")) registerUser("saad", "123123");
+    if(!checkUsername("saad")) registerAdmin("saad", "s");
 
 }
-bool Admin::registerUser(const std::string& username, const std::string& password) {
+bool Admin::registerAdmin(const std::string& username, const std::string& password) {
     std::string hashedPassword = hashPassword(password);
     std::ofstream file("passwords.txt", std::ios::app);
     if (!file.is_open()) {
@@ -81,4 +87,114 @@ bool Admin::adminLogin(const std::string& username, const std::string& password)
     }
     std::cout << "User not found!" << std::endl;
     return false;
+}
+
+void Admin::run() {
+    int admin_choice;
+label_3:
+    system("CLS");
+    std::cout << "\t\t\t------------------------------------------------------------\n";
+    std::cout << "\t\t\t                           ADMIN MENUE                      \n";
+    std::cout << "\t\t\t------------------------------------------------------------\n";
+    std::cout << "\t\t\t  1)  Register New Employee                                 \n";
+    std::cout << "\t\t\t  2)  Remove Employee                                       \n";
+    std::cout << "\t\t\t  3)  All Employee                                          \n";
+    std::cout << "\t\t\t  4)  Back                                                  \n";
+
+    if (std::cin >> admin_choice) {
+        switch (admin_choice) {
+        case 1:
+            registerStaff();
+            break;
+        case 2:
+            //delete_employee();
+        case 3:
+            //all_employee();
+            break;
+        case 4:
+            return;
+        default:
+            std::cout << "Please enter valid input\n";
+        }
+        goto label_3;
+    }
+    else {
+        std::cerr << "Error: Reading input" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        goto label_3;
+    }
+}
+
+
+void Admin::registerStaff() {
+
+    system("CLS");
+    int employee_id;
+    std::string employee_name, employee_username, employee_password;
+    std::cout << "enter Employee Id : ";
+    if (std::cin >> employee_id);
+    else {
+        std::cerr << "Error: Reading input" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    std::cout << "Enter Employee Name : ";
+    if (std::cin >> employee_name);
+    else {
+        std::cerr << "Error: Reading input" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    std::cout << "Enter Employee username : ";
+    if (std::cin >> employee_username);
+    else {
+        std::cerr << "Error: Reading input" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    std::cout << "Enter Employee password :  ";
+    if (std::cin >> employee_password);
+    else {
+        std::cerr << "Error: Reading input" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    // hashing employee's password
+    std::string hashed_employee_password = hashPassword(employee_password);
+
+    //inserting value in the database
+    sqlite3_stmt* myStatement;
+    std::string sql = "INSERT INTO employee VALUES(?,?,?,?);";
+       
+    int statusOfPrep = sqlite3_prepare_v2(db, sql.c_str(), -1, &myStatement, NULL);
+    try {
+        if (statusOfPrep != SQLITE_OK) {
+            throw (std::string)"Error : Preparing Statement";
+        }
+        sqlite3_bind_int(myStatement, 1, employee_id);
+        sqlite3_bind_text(myStatement, 2, employee_name.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(myStatement, 3, employee_username.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(myStatement, 4, hashed_employee_password.c_str(), -1, SQLITE_STATIC);
+
+        bool querySuccess = executeQueryNoResultsBack(myStatement);
+
+
+        try {
+            if (querySuccess == false) {
+                throw (std::string)"Error : Adding employee";
+            }
+            std::cout << "Emloyee added successfully\n";
+            system("PAUSE");
+        }
+        catch (std::string e) {
+            std::cerr << e << std::endl;
+            return;
+        }
+    }
+    catch (std::string e) {
+        std::cerr << e << std::endl;
+        return;
+    }
+        
 }

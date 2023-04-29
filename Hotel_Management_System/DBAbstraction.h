@@ -1,3 +1,9 @@
+/*
+author      :   saad khan
+project     :   Hotel Management System
+date        :   April-2023
+*/
+
 #pragma once
 #include<string>
 #include"sqlite3.h"
@@ -5,7 +11,7 @@
 class DBAbstraction {
 
 public:
-	DBAbstraction(std::string pathToFile);
+	DBAbstraction();
 	~DBAbstraction();
 
 protected:
