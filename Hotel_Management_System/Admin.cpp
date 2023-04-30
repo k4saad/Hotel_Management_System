@@ -80,54 +80,64 @@ bool Admin::adminLogin(const std::string& username, const std::string& password)
                 }
                 else {
                     std::cout << "Incorrect password!" << std::endl;
+                    system("PAUSE");
                     return false;
                 }
             }
         }
     }
     std::cout << "User not found!" << std::endl;
+    system("PAUSE");
     return false;
 }
 
-void Admin::run() {
-    int admin_choice;
-label_3:
-    system("CLS");
-    std::cout << "\t\t\t------------------------------------------------------------\n";
-    std::cout << "\t\t\t                           ADMIN MENUE                      \n";
-    std::cout << "\t\t\t------------------------------------------------------------\n";
-    std::cout << "\t\t\t  1)  Register New Employee                                 \n";
-    std::cout << "\t\t\t  2)  Remove Employee                                       \n";
-    std::cout << "\t\t\t  3)  All Employee                                          \n";
-    std::cout << "\t\t\t  4)  Back                                                  \n";
+void Admin::run(const std::string& username, const std::string& password) {
+    if (adminLogin(username, password)) {
+        system("PAUSE");
+        int admin_choice;
+    label_3:
+        system("CLS");
+        std::cout << "\t\t\t------------------------------------------------------------\n";
+        std::cout << "\t\t\t                           ADMIN MENUE                      \n";
+        std::cout << "\t\t\t------------------------------------------------------------\n";
+        std::cout << "\t\t\t  1)  Register New Employee                                 \n";
+        std::cout << "\t\t\t  2)  Remove Employee                                       \n";
+        std::cout << "\t\t\t  3)  View All Employee                                     \n";
+        std::cout << "\t\t\t  4)  Back                                                  \n";
 
-    if (std::cin >> admin_choice) {
-        switch (admin_choice) {
-        case 1:
-            registerStaff();
-            break;
-        case 2:
-            //delete_employee();
-        case 3:
-            //all_employee();
-            break;
-        case 4:
-            return;
-        default:
-            std::cout << "Please enter valid input\n";
+        if (std::cin >> admin_choice) {
+            switch (admin_choice) {
+            case 1:
+                registerEmployee();
+                break;
+            case 2:
+                removeEmployee();
+                break;
+            case 3:
+                viewAllEmployee();
+                break;
+            case 4:
+                return;
+            default:
+                std::cout << "Please enter valid input\n";
+                system("PAUSE");
+            }
+            goto label_3;
         }
-        goto label_3;
+        else {
+            std::cerr << "Error: Reading input" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            goto label_3;
+        }
     }
     else {
-        std::cerr << "Error: Reading input" << std::endl;
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        goto label_3;
+        return;
     }
 }
 
 
-void Admin::registerStaff() {
+void Admin::registerEmployee() {
 
     system("CLS");
     int employee_id;
@@ -189,12 +199,122 @@ void Admin::registerStaff() {
         }
         catch (std::string e) {
             std::cerr << e << std::endl;
+            system("PAUSE");
             return;
         }
     }
     catch (std::string e) {
         std::cerr << e << std::endl;
+        system("PAUSE");
         return;
     }
         
+}
+
+//delete employee
+void Admin::removeEmployee() {
+    system("CLS");
+    sqlite3_stmt* myStatement;
+
+    std::string sql = "SELECT employee.id, employee.name, employee.username FROM employee ORDER BY employee.id;";
+
+    try {
+        bool preparingSuccess = prepareQueryWithResults(sql, myStatement);
+        if (preparingSuccess == false) {
+            throw (std::string)"Error : Preparing Query";
+        }
+        int statusOfStep = sqlite3_step(myStatement);
+        int empId;
+        std::string empName, empUsername;
+        while (statusOfStep == SQLITE_ROW) {
+
+            empId = sqlite3_column_int(myStatement, 0);
+            empName = (char*)sqlite3_column_text(myStatement, 1);
+            empUsername = (char*)sqlite3_column_text(myStatement, 2);
+
+            std::cout << "---------------------------" << "\n";
+            std::cout << "Id : " << empId << "\n";
+            std::cout << "Name : " << empName << "\n";
+            std::cout << "Username : " << empUsername << "\n";
+            statusOfStep = sqlite3_step(myStatement);
+        }
+        int delEmpId;
+        std::cout << "\nEnter id of employee to be deleted : \n";
+        if (std::cin >> delEmpId);
+        else {
+            std::cerr << "Error: Reading input" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        sql = "DELETE FROM employee WHERE id = (?);";
+        int statusOfPrep = sqlite3_prepare_v2(db, sql.c_str(), -1, &myStatement, NULL);
+
+
+        try {
+            if (statusOfPrep != SQLITE_OK) {
+                throw (std::string)"Error : Preparing Statement";
+            }
+            sqlite3_bind_int(myStatement, 1, delEmpId);
+            bool querySuccess = executeQueryNoResultsBack(myStatement);
+
+            try {
+                if (querySuccess == false) {
+                    throw (std::string)"Error : Removing employee";
+                }
+                std::cout << "Emloyee removed successfully\n";
+                system("PAUSE");
+            }
+            catch (std::string e) {
+                std::cerr << e << std::endl;
+                system("PAUSE");
+                return;
+            }
+        }
+        catch (std::string e) {
+            std::cerr << e << std::endl;
+            system("PAUSE");
+            return;
+        }
+
+    }
+    catch (std::string e) {
+        std::cerr << e << std::endl;
+        system("PAUSE");
+        return;
+    }
+}
+
+
+void Admin::viewAllEmployee() {
+    system("CLS");
+    std::cout << "\nAll employee\n";
+    std::string sql = "SELECT employee.id, employee.name, employee.username FROM employee ORDER BY employee.id";
+    sqlite3_stmt* myStatement;
+    try {
+        bool preparingSuccess = prepareQueryWithResults(sql, myStatement);
+        if (preparingSuccess == false) {
+            throw (std::string)"Error : Preparing Query";
+        }
+        int statusOfStep = sqlite3_step(myStatement);
+        int empId;
+        std::string empName, empUsername;
+        while (statusOfStep == SQLITE_ROW) {
+
+            empId = sqlite3_column_int(myStatement, 0);
+            empName = (char*)sqlite3_column_text(myStatement, 1);
+            empUsername = (char*)sqlite3_column_text(myStatement, 2);
+
+            std::cout << "---------------------------" << "\n";
+            std::cout << "Id : " << empId << "\n";
+            std::cout << "Name : " << empName << "\n";
+            std::cout << "Username : " << empUsername << "\n";
+            statusOfStep = sqlite3_step(myStatement);
+        }
+        system("PAUSE");
+    }
+    catch (std::string e) {
+        std::cerr << e << std::endl;
+        system("PAUSE");
+        return;
+    }
 }

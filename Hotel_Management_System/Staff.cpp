@@ -15,7 +15,7 @@ label_2:
     std::cout << "\t\t\t                            STAFF                           \n";
     std::cout << "\t\t\t------------------------------------------------------------\n";
     std::cout << "\t\t\t  1)  Admin login                                           \n";
-    std::cout << "\t\t\t  2)  Staff login                                           \n";
+    std::cout << "\t\t\t  2)  Employee login                                        \n";
     std::cout << "\t\t\t  3)  Back                                                  \n";
     if (std::cin >> staff_choice) {
         switch (staff_choice) {
@@ -23,12 +23,13 @@ label_2:
             login("Admin");
             break;
         case 2:
-            //staff_login();
+            login("Employee");
             break;
         case 3:
             return;
         default:
             std::cout << "Please enter valid input\n";
+            system("PAUSE");
         }
         goto label_2;
 
@@ -46,23 +47,31 @@ void Staff::login(const std::string& s) {
     system("CLS");
     std::string username, password;
     std::cout << "username : ";
-    std::cin >> username;
+    if (std::cin >> username);
+    else {
+        std::cerr << "Error reading input" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return;
+    }
     std::cout << "password : ";
-    std::cin >> password;
+    if (std::cin >> password);
+    else {
+        std::cerr << "Error reading input" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return;
+    }
     if (s == "Admin") {
         Admin A;
-        if (A.adminLogin(username, password)) {
-            std::cout << "Access granted\n";
-            system("PAUSE");
-            A.run();
-        }
-        else {
-            system("PAUSE");
-            return;
-        }
+        A.run(username, password);
+        return;
+        
     }
     else {
-
+        Employee E;
+        E.run(username, password);
+        return;
     }
-    return;
+    
 }

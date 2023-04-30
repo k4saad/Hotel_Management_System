@@ -7,7 +7,8 @@ date        :   April-2023
 #pragma once
 #include<iostream>
 #include"Admin.h"
-class Staff {
+#include"Employee.h"
+class Staff:public Hotel {
     std::string userName, password;
 public:
     void run();

@@ -64,7 +64,7 @@ label_1:
             exit(1);
         default:
             std::cout << "Please enter valid input\n";
-           
+            system("PAUSE");           
         }
      goto label_1;
     }
