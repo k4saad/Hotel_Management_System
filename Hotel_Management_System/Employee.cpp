@@ -7,6 +7,7 @@ date        :   April-2023
 #include<iostream>
 #include"Admin.h"
 #include"Employee.h"
+#include"Room.h"
 
 void Employee::run(const std::string& username, const std::string& password) {
     if (employeeLogin(username, password)) {
@@ -15,7 +16,6 @@ void Employee::run(const std::string& username, const std::string& password) {
     label_4:
         system("CLS");
 
-    
         std::cout << "\t\t\t------------------------------------------------------------\n";
         std::cout << "\t\t\t                            STAFF                           \n";
         std::cout << "\t\t\t------------------------------------------------------------\n";
@@ -26,7 +26,7 @@ void Employee::run(const std::string& username, const std::string& password) {
         if (std::cin >> employee_choice) {
             switch (employee_choice) {
             case 1:
-                //room_opr();
+                operation("Room");
                 break;
             case 2:
                //food_opr();
@@ -36,7 +36,6 @@ void Employee::run(const std::string& username, const std::string& password) {
                 break;
             case 4:
                 return;
-   
             default:
                 std::cout << "Please enter valid input\n";
                 system("PAUSE");
@@ -47,6 +46,7 @@ void Employee::run(const std::string& username, const std::string& password) {
             std::cerr << "Error reading input" << std::endl;
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            system("PAUSE");
             goto label_4;
         }
     }
@@ -80,5 +80,11 @@ bool Employee::employeeLogin(const std::string& username, const std::string& pas
         std::cerr << e << std::endl;
         system("PAUSE");
         return false;
+    }
+}
+void Employee::operation(const std::string& opr) {
+    if (opr == "Room") {
+        Room R;
+        R.run();
     }
 }

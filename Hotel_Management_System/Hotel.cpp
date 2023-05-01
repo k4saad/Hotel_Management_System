@@ -1,11 +1,11 @@
-#include<iostream>
-#include<limits>
-#include<string>
 /*
 author      :   saad khan
 project     :   Hotel Management System
 date        :   April-2023
 */
+#include<iostream>
+#include<limits>
+#include<string>
 
 #include<vector>
 #include"DBAbstraction.h"
@@ -17,8 +17,12 @@ Hotel::Hotel() {
     createTables();
 }
 void Hotel::createTables() {
+
     bool allQuerySuccess = true;
-    std::vector<std::string> sqls = { "CREATE TABLE IF NOT EXISTS employee(id INTEGER PRIMARY KEY CHECK(id != 0 AND id > 0),name TEXT NOT NULL, username TEXT NOT NULL, password TEXT);\n" };
+    std::vector<std::string> sqls = {
+                                    "CREATE TABLE IF NOT EXISTS employee(id INTEGER PRIMARY KEY CHECK(id != 0 AND id > 0),name TEXT NOT NULL, username TEXT NOT NULL, password TEXT);\n",
+                                    "CREATE TABLE IF NOT EXISTS room(id INTEGER PRIMARY KEY CHECK(id != 0 AND id > 0), name TEXT , capacity INTEGER, price INTEGER, roomsize INTEGER, bedsize TEXT, discription TEXT);\n"
+                                    };
     sqlite3_exec(db, "BEGIN TRANSACTION;", NULL, NULL, NULL);
     for (int i = 0; i < sqls.size(); ++i) {
 
@@ -39,6 +43,7 @@ void Hotel::createTables() {
     else {
         sqlite3_exec(db, "ROLLBACK TRANSACTION;", NULL, NULL, NULL);
         std::cout << "Error creating Tables";
+        system("PAUSE");
     }
 }
 

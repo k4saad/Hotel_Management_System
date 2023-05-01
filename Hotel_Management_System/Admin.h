@@ -8,6 +8,8 @@ date        :   April-2023
 #include<string>
 #include"Hotel.h"
 class Admin:public Hotel {
+	int employeeId;
+	std::string employeeName, employeeUsername, employeePassword;
 	bool registerAdmin(const std::string& username, const std::string& password);
 	bool checkUsername(const std::string admin_userName);
 	void registerEmployee();

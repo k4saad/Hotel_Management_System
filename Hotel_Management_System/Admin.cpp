@@ -140,38 +140,44 @@ void Admin::run(const std::string& username, const std::string& password) {
 void Admin::registerEmployee() {
 
     system("CLS");
-    int employee_id;
-    std::string employee_name, employee_username, employee_password;
     std::cout << "enter Employee Id : ";
-    if (std::cin >> employee_id);
+    if (std::cin >> employeeId);
     else {
         std::cerr << "Error: Reading input" << std::endl;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        return;
     }
     std::cout << "Enter Employee Name : ";
-    if (std::cin >> employee_name);
+    if (std::cin >> employeeName);
     else {
         std::cerr << "Error: Reading input" << std::endl;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        return;
     }
     std::cout << "Enter Employee username : ";
-    if (std::cin >> employee_username);
+    if (std::cin >> employeeUsername);
     else {
         std::cerr << "Error: Reading input" << std::endl;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        return;
     }
     std::cout << "Enter Employee password :  ";
-    if (std::cin >> employee_password);
+    if (std::cin >> employeePassword);
     else {
         std::cerr << "Error: Reading input" << std::endl;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("pause");
+        return;
     }
     // hashing employee's password
-    std::string hashed_employee_password = hashPassword(employee_password);
+    std::string hashed_employee_password = hashPassword(employeePassword);
 
     //inserting value in the database
     sqlite3_stmt* myStatement;
@@ -182,9 +188,9 @@ void Admin::registerEmployee() {
         if (statusOfPrep != SQLITE_OK) {
             throw (std::string)"Error : Preparing Statement";
         }
-        sqlite3_bind_int(myStatement, 1, employee_id);
-        sqlite3_bind_text(myStatement, 2, employee_name.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(myStatement, 3, employee_username.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_int(myStatement, 1, employeeId);
+        sqlite3_bind_text(myStatement, 2, employeeName.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(myStatement, 3, employeeUsername.c_str(), -1, SQLITE_STATIC);
         sqlite3_bind_text(myStatement, 4, hashed_employee_password.c_str(), -1, SQLITE_STATIC);
 
         bool querySuccess = executeQueryNoResultsBack(myStatement);
@@ -224,18 +230,16 @@ void Admin::removeEmployee() {
             throw (std::string)"Error : Preparing Query";
         }
         int statusOfStep = sqlite3_step(myStatement);
-        int empId;
-        std::string empName, empUsername;
         while (statusOfStep == SQLITE_ROW) {
 
-            empId = sqlite3_column_int(myStatement, 0);
-            empName = (char*)sqlite3_column_text(myStatement, 1);
-            empUsername = (char*)sqlite3_column_text(myStatement, 2);
+            employeeId = sqlite3_column_int(myStatement, 0);
+            employeeName = (char*)sqlite3_column_text(myStatement, 1);
+            employeeUsername = (char*)sqlite3_column_text(myStatement, 2);
 
             std::cout << "---------------------------" << "\n";
-            std::cout << "Id : " << empId << "\n";
-            std::cout << "Name : " << empName << "\n";
-            std::cout << "Username : " << empUsername << "\n";
+            std::cout << "Id : " << employeeId << "\n";
+            std::cout << "Name : " << employeeName << "\n";
+            std::cout << "Username : " << employeeUsername << "\n";
             statusOfStep = sqlite3_step(myStatement);
         }
         int delEmpId;
@@ -245,6 +249,8 @@ void Admin::removeEmployee() {
             std::cerr << "Error: Reading input" << std::endl;
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            system("pause");
+            return;
         }
         sql = "DELETE FROM employee WHERE id = (?);";
         int statusOfPrep = sqlite3_prepare_v2(db, sql.c_str(), -1, &myStatement, NULL);
@@ -296,18 +302,16 @@ void Admin::viewAllEmployee() {
             throw (std::string)"Error : Preparing Query";
         }
         int statusOfStep = sqlite3_step(myStatement);
-        int empId;
-        std::string empName, empUsername;
         while (statusOfStep == SQLITE_ROW) {
 
-            empId = sqlite3_column_int(myStatement, 0);
-            empName = (char*)sqlite3_column_text(myStatement, 1);
-            empUsername = (char*)sqlite3_column_text(myStatement, 2);
+            employeeId = sqlite3_column_int(myStatement, 0);
+            employeeName = (char*)sqlite3_column_text(myStatement, 1);
+            employeeUsername = (char*)sqlite3_column_text(myStatement, 2);
 
             std::cout << "---------------------------" << "\n";
-            std::cout << "Id : " << empId << "\n";
-            std::cout << "Name : " << empName << "\n";
-            std::cout << "Username : " << empUsername << "\n";
+            std::cout << "Id : " << employeeId<< "\n";
+            std::cout << "Name : " << employeeName << "\n";
+            std::cout << "Username : " << employeeUsername << "\n";
             statusOfStep = sqlite3_step(myStatement);
         }
         system("PAUSE");

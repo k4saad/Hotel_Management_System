@@ -9,8 +9,7 @@ date        :   April-2023
 #include"Hotel.h"
 class Employee :public Hotel {
 	std::string hashPassword(const std::string& password);
-	//bool checkUsername(const std::string admin_userName);
-	
+	void operation(const std::string&);
 public:
 	bool employeeLogin(const std::string& username, const std::string& password);
 	void run(const std::string& username, const std::string& password);
