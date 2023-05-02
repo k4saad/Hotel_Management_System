@@ -148,6 +148,7 @@
     <ClCompile Include="Employee.cpp" />
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="Hotel.cpp" />
+    <ClCompile Include="Ledger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="Room.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Employee.h" />
     <ClInclude Include="Food.h" />
     <ClInclude Include="Hotel.h" />
+    <ClInclude Include="Ledger.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="Staff.h" />
   </ItemGroup>

@@ -9,6 +9,7 @@ date        :   April-2023
 #include"Employee.h"
 #include"Room.h"
 #include"Food.h"
+#include"Ledger.h"
 
 void Employee::run(const std::string& username, const std::string& password) {
     if (employeeLogin(username, password)) {
@@ -33,7 +34,7 @@ void Employee::run(const std::string& username, const std::string& password) {
                 operation("Food");
                 break;
             case 3:
-                //ledger();
+                operation("Ledger");
                 break;
             case 4:
                 return;
@@ -91,5 +92,9 @@ void Employee::operation(const std::string& opr) {
     else if(opr == "Food") {
         Food F;
         F.run();
+    }
+    else {
+        Ledger L;
+        L.run();
     }
 }

@@ -1,3 +1,9 @@
+/*
+author      :   saad khan
+project     :   Hotel Management System
+date        :   April-2023
+*/
+
 #include<iostream>
 #include"Food.h"
 

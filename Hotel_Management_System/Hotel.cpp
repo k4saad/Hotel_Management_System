@@ -22,7 +22,8 @@ void Hotel::createTables() {
     std::vector<std::string> sqls = {
                                     "CREATE TABLE IF NOT EXISTS employee(id INTEGER PRIMARY KEY CHECK(id != 0 AND id > 0),name TEXT NOT NULL, username TEXT NOT NULL, password TEXT);\n",
                                     "CREATE TABLE IF NOT EXISTS room(id INTEGER PRIMARY KEY CHECK(id != 0 AND id > 0), name TEXT , capacity INTEGER, price INTEGER, roomsize INTEGER, bedsize TEXT, discription TEXT);\n",
-                                    "CREATE TABLE IF NOT EXISTS food(name TEXT PRIMARY KEY, type TEXT, price INTEGER)"
+                                    "CREATE TABLE IF NOT EXISTS income(name TEXT, quantity INTEGER, amount INTEGER, dept TEXT)\n",
+                                    "CREATE TABLE IF NOT EXISTS food(name TEXT PRIMARY KEY, type TEXT, price INTEGER)\n"
                                     };
     sqlite3_exec(db, "BEGIN TRANSACTION;", NULL, NULL, NULL);
     for (int i = 0; i < sqls.size(); ++i) {
