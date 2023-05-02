@@ -9,7 +9,7 @@ date        :   April-2023
 #include"DBAbstraction.h"
 
 class Hotel:public DBAbstraction {
-	void run_function(const std::string&);
+	void runFunction(const std::string&);
 	void createTables();
 public:
 	Hotel();

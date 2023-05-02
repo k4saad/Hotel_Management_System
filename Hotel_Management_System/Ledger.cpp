@@ -71,6 +71,7 @@ void Ledger::viewRoomIncome() {
             std::cout << "Income : " << proIncome << " Rs\n";
             statusOfStep = sqlite3_step(myStatement);
         }
+        sqlite3_finalize(myStatement);
         std::cout << "\n------------------------------------------\n";
         std::cout << "Total Income : " << totalIncome << " Rs\n";
         std::cout << "------------------------------------------\n\n\n";
@@ -108,7 +109,7 @@ void Ledger::viewFoodIncome(){
 
             statusOfStep = sqlite3_step(myStatement);
         }
-
+        sqlite3_finalize(myStatement);
         std::cout << "\n------------------------------------------\n";
         std::cout << "Total Income : " << totalIncome << " Rs\n";
         std::cout << "------------------------------------------\n\n\n";
@@ -141,6 +142,7 @@ void Ledger::viewTotalIncome() {
 
             statusOfStep = sqlite3_step(myStatement);
         }
+        sqlite3_finalize(myStatement);
         std::cout << "\n------------------------------------------\n";
         std::cout << "Total Income : " << totalIncome << " Rs\n";
         std::cout << "------------------------------------------\n";

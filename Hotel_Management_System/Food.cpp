@@ -5,9 +5,11 @@ date        :   April-2023
 */
 
 #include<iostream>
+#include<vector>
+#include<iomanip>
 #include"Food.h"
 
-void Food::run() {
+void Food::employeeRun() {
 
     int employee_choice;
 label_6:
@@ -131,7 +133,7 @@ void Food::deleteFood() {
             std::cout << "Food price : " << foodPrice << " per plate\n";
             statusOfStep = sqlite3_step(myStatement);
         }
-
+        sqlite3_finalize(myStatement);
         std::string delFoodName;
         std::cout << "\nEnter food name to be deleted\n";
         std::cin.ignore();
@@ -198,7 +200,142 @@ void Food::viewAllFood() {
             std::cout << "Food price : " << foodPrice << " per plate\n";
             statusOfStep = sqlite3_step(myStatement);
         }
+        sqlite3_finalize(myStatement);
         system("PAUSE");
+    }
+    catch (std::string e) {
+        std::cerr << e << std::endl;
+        system("PAUSE");
+        return;
+    }
+}
+void Food::orderFood() {
+    system("CLS");
+    sqlite3_stmt* myStatement;
+    std::string sql = "SELECT food.name, food.price FROM food ORDER BY food.type;";
+    int statusOfPrep = sqlite3_prepare_v2(db, sql.c_str(), -1, &myStatement, NULL);
+    try {
+        if (statusOfPrep != SQLITE_OK) {
+            throw (std::string)"Something went wrong ";
+        }
+        int statusOfStep = sqlite3_step(myStatement);
+        std::cout << "\n\n+---------------------------MENUE---------------------------+\n";
+        std::cout << "\tNAME\t\t\t\t" << "PRICE\n\n";
+        while (statusOfStep == SQLITE_ROW) {
+            foodName = (char*)sqlite3_column_text(myStatement, 0);
+            foodPrice = sqlite3_column_int(myStatement, 1);
+           std::cout << "\t" << foodName << "\t\t\t\t" << foodPrice << "\n";
+            statusOfStep = sqlite3_step(myStatement);
+        }
+        std::cout << "+-----------------------------------------------------------+\n\n\n";
+        sqlite3_finalize(myStatement);
+        bool guestChoice = true;
+        std::string guestFoodName;
+        std::vector<std::string> allGuestFoodName;
+        int guestFoodQuantity, guestFoodPrice;
+        std::vector<int> allGuestFoodQuantity, allGuestFoodPrice;
+       std::cout << "\nEnter 0 to retrun back or 1 to continue :  \n";
+
+       while (guestChoice) {
+           std::cout << "Enter Food name : \n";
+           if(std::cin >> guestFoodName);
+           else {
+               std::cerr << "Error: Reading input" << std::endl;
+               std::cin.clear();
+               std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+               system("pause");
+               return;
+           }
+           std::cout << "Enter Quantity : \n";
+           if (std::cin >> guestFoodQuantity);
+           else {
+               std::cerr << "Error: Reading input" << std::endl;
+               std::cin.clear();
+               std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+               system("pause");
+               return;
+           }
+           sql = "SELECT food.price FROM food WHERE food.name=(?);";
+           int statusOfPrep = sqlite3_prepare_v2(db, sql.c_str(), -1, &myStatement, NULL);
+           try {
+               if (statusOfPrep != SQLITE_OK) {
+                   throw (std::string)"Something went wrong ";
+               }
+               sqlite3_bind_text(myStatement, 1, guestFoodName.c_str(), -1, SQLITE_STATIC);
+               if (statusOfStep == SQLITE_ROW) {
+                   guestFoodPrice = sqlite3_column_int(myStatement, 0);
+                   allGuestFoodPrice.push_back(guestFoodPrice);
+
+                   allGuestFoodQuantity.push_back(guestFoodQuantity);
+                   allGuestFoodName.push_back(guestFoodName);
+                   std::cout << guestFoodQuantity << " " << guestFoodName << " ordered.\n";
+               }
+               else {
+                   std::cout << guestFoodName << " is not available.\n";
+               }
+               sqlite3_finalize(myStatement);               
+           }
+           catch (std::string e) {
+               std::cerr << e << std::endl;
+               system("PAUSE");
+               return;
+           }
+           std::cout << "For recipt press 0 or to continue press 1\n";
+           if(std::cin >> guestChoice);
+           else {
+               std::cerr << "Error: Reading input" << std::endl;
+               std::cin.clear();
+               std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+               guestChoice = false;
+               system("pause");
+           }
+       }
+       std::string dept = "food";
+       for (decltype(allGuestFoodName.size()) i = 0; i <= allGuestFoodName.size(); ++i) {
+           sql = "INSERT INTO income VALUES(?,?,?,?);";
+           statusOfPrep = sqlite3_prepare_v2(db, sql.c_str(), -1, &myStatement, NULL);
+           try {
+               if (statusOfPrep != SQLITE_OK) {
+                   throw (std::string)"Something went wrong ";
+               }
+               sqlite3_bind_text(myStatement, 1, allGuestFoodName[i].c_str(), -1, SQLITE_STATIC);
+               sqlite3_bind_int(myStatement, 2, allGuestFoodQuantity[i]);
+               sqlite3_bind_int(myStatement, 3, allGuestFoodPrice[i]);
+               sqlite3_bind_text(myStatement, 4, dept.c_str(), -1, SQLITE_STATIC);
+               bool querySuccess = executeQueryNoResultsBack(myStatement);
+               try {
+                   if (querySuccess == false) {
+                       throw (std::string)"Something went wrong ";
+                   }
+               }
+               catch (std::string e) {
+                   std::cerr << e << std::endl;
+                   system("PAUSE");
+                   return;
+               }
+           
+           }
+           catch (std::string e) {
+               std::cerr << e << std::endl;
+               system("PAUSE");
+               return;
+           }
+       }
+       int guestFoodTotalPrice = 0;
+       system("CLS");
+       std::cout << "\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+       std::cout << "\t|" << std::setw(36) << "      RECIPT " << std::setw(27) << "|\n";
+       std::cout << "\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+       std::cout << "\t  NAME\t\t" << "PRICE\t\t" << "QUANTITY\n\n";
+       for (decltype(allGuestFoodName.size()) i = 0; i <= allGuestFoodName.size(); ++i) {
+           guestFoodTotalPrice = guestFoodTotalPrice + allGuestFoodPrice[i] * allGuestFoodQuantity[i];
+           std::cout << "\t " << allGuestFoodName[i] << "\t\t" << allGuestFoodPrice[i] << " Rs" << "\t\t" << allGuestFoodQuantity[i] <<"\n";
+       }
+       std::cout << "\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+       std::cout << "\n\nGrand Total : " << guestFoodTotalPrice << " Rs" << "\n\n\n";
+       std::cout << "\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+       system("PAUSE");
+
     }
     catch (std::string e) {
         std::cerr << e << std::endl;

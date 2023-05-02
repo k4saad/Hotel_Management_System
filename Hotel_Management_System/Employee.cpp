@@ -87,11 +87,11 @@ bool Employee::employeeLogin(const std::string& username, const std::string& pas
 void Employee::operation(const std::string& opr) {
     if (opr == "Room") {
         Room R;
-        R.run();
+        R.employeeRun();
     }
     else if(opr == "Food") {
         Food F;
-        F.run();
+        F.employeeRun();
     }
     else {
         Ledger L;

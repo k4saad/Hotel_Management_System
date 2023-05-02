@@ -15,5 +15,6 @@ class Room : public Hotel{
     void viewAllRoom();
 
 public:
-    void run();
+    void employeeRun();
+    void bookRoom();
 };

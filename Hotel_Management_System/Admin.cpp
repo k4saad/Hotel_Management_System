@@ -14,7 +14,7 @@ date        :   April-2023
 #include"Admin.h"
 
 Admin::Admin() {
-    if(!checkUsername("saad")) registerAdmin("saad", "s");
+    if(!checkUsername("admin")) registerAdmin("admin", "admin");
 
 }
 bool Admin::registerAdmin(const std::string& username, const std::string& password) {
@@ -242,6 +242,7 @@ void Admin::removeEmployee() {
             std::cout << "Username : " << employeeUsername << "\n";
             statusOfStep = sqlite3_step(myStatement);
         }
+        sqlite3_finalize(myStatement);
         int delEmpId;
         std::cout << "\nEnter id of employee to be deleted : \n";
         if (std::cin >> delEmpId);
@@ -314,6 +315,7 @@ void Admin::viewAllEmployee() {
             std::cout << "Username : " << employeeUsername << "\n";
             statusOfStep = sqlite3_step(myStatement);
         }
+        sqlite3_finalize(myStatement);
         system("PAUSE");
     }
     catch (std::string e) {

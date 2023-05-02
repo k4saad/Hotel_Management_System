@@ -6,6 +6,8 @@ date        :   April-2023
 
 #include<iostream>
 #include<limits>
+#include"Admin.h"
+#include"Employee.h"
 #include"Staff.h"
 void Staff::run(){
     int staff_choice;

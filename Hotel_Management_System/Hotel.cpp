@@ -10,8 +10,8 @@ date        :   April-2023
 #include<vector>
 #include"DBAbstraction.h"
 #include"Hotel.h"
-#include"Admin.h"
 #include"Staff.h"
+#include"Guest.h"
 
 Hotel::Hotel() {
     createTables();
@@ -62,13 +62,13 @@ label_1:
     if (std::cin >> main_choice) {
         switch (main_choice) {
         case 1:
-            run_function("Staff");
+            runFunction("Staff");
             break;
         case 2:
-            //guest_menue();
+            runFunction("Guest");
             break;
         case 3:
-            exit(1);
+            exit(0);
         default:
             std::cout << "Please enter valid input\n";
             system("PAUSE");           
@@ -82,13 +82,14 @@ label_1:
         goto label_1;
     }
 }
-void Hotel::run_function(const std::string& f) {
+void Hotel::runFunction(const std::string& f) {
     if (f == "Staff") {
-        Staff s;
-        s.run();
+        Staff S;
+        S.run();
     }
-    else if (f == "Customer") {
-
+    else if (f == "Guest") {
+        Guest G;
+        G.run();
     }
     else {
         std::cerr << "Error in Hotel.cpp" << std::endl;

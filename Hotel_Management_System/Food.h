@@ -15,5 +15,6 @@ class Food : public Hotel {
     void viewAllFood();
 
 public:
-    void run();
+    void employeeRun();
+    void orderFood();
 };
