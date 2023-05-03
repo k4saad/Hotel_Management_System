@@ -1,21 +1,22 @@
-#	HOTEL MANAGEMENT
-Project		:	Hotel Management
-
+#	Hotel Management System
 Author		:	Saad Khan
-##	Discription
-In this project I have used C++ language, and used Crypto++ library and sqlite database to design CLI program that manage hotel affair, employee can add, delete and see food and room provided by the Hotel. Sha256 is used for encryption.
 
-## Functions
-There are functions for admin, staff and customer
+<h3><strong>Short Description</strong></h3>
+CLI program that helps manage hotel affair.<br>
+Encrypted with Sha256.<br>
+Default variables:<br>
+Login - admin<br>
+Pass  - admin<br>
 
-### Admin
-Add, delete and see all employee
+<h3>Dependencies</strong>:</h3>
+-C++<br>
+-Crypto++<br>
+-SQLite database<br>
 
-### Staff
-Add, delete and see all rooms and foods provided by the hotel
+<h3>CLI provides such functions:</h3>
+Staff      - Adds , deletes and views rooms & food provided by hotel<br>
+Admin    - Adds , deletes and views all employees<br>
+Customer - Orders food and reserves a room<br>
 
-### Customer
-Order food and reserve a room
-
-## How to use
-Username and password for Admin is admin and admin. 
+<h3>Build</h3>
+<pre>Add build options here(For people who use MinGW or smth else)</pre>
