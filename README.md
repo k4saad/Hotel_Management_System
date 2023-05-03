@@ -19,4 +19,4 @@ Admin    - Adds , deletes and views all employees<br>
 Customer - Orders food and reserves a room<br>
 
 <h3>Build</h3>
-```Add build options here(For people who use MinGW or smth else)```
+<pre>Add build options here(For people who use MinGW or smth else)</pre>
