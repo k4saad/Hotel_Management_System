@@ -13,5 +13,5 @@ class Employee :public Hotel {
 public:
 	bool employeeLogin(const std::string& username, const std::string& password);
 	void run(const std::string& username, const std::string& password);
-	
+
 };
