@@ -1,24 +1,22 @@
 #	Hotel Management System
 Author		:	Saad Khan
 
-**Short Description
-CLI program that helps manage hotel affair.
-Encrypted with Sha256.
-Default variables:
-Login - admin
-Pass  - admin
+<h3><strong>Short Description</strong></h3>
+CLI program that helps manage hotel affair.<br>
+Encrypted with Sha256.<br>
+Default variables:<br>
+Login - admin<br>
+Pass  - admin<br>
 
-**Dependencies:
--C++
--Crypto++
--SQLite database
+<h3>Dependencies</strong>:</h3>
+-C++<br>
+-Crypto++<br>
+-SQLite database<br>
 
-**CLI provides such functions:
-### Staff    - Adds , deletes and views rooms & food provided by hotel
+<h3>CLI provides such functions:</h3>
+Staff      - Adds , deletes and views rooms & food provided by hotel<br>
+Admin    - Adds , deletes and views all employees<br>
+Customer - Orders food and reserves a room<br>
 
-### Admin    - Adds , deletes and views all employees
-
-### Customer - Orders food and reserves a room
-
-**Build
+<h3>Build</h3>
 ```Add build options here(For people who use MinGW or smth else)```
