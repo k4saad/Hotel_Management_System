@@ -8,8 +8,8 @@ date        :   April-2023
 #include <fstream>
 #include <sstream>
 #include <unordered_set>
-#include <sha.h>
-#include <hex.h>
+#include "../Hotel_Management_System/crypto++/cryptopp/sha.h"
+#include "../Hotel_Management_System/crypto++/cryptopp/hex.h"
 #include<limits>
 #include"Admin.h"
 
